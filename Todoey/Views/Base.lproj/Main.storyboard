@@ -44,12 +44,13 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6tQ-bC-PJY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1756" y="136.28185907046478"/>
+            <point key="canvasLocation" x="2695.1999999999998" y="136.28185907046478"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Item-->
         <scene sceneID="yQk-j5-dGv">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6Ed-og-oII" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="kD7-ex-mbq"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="0Eo-jM-CYo">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -66,7 +67,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eQm-SK-tmY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="975" y="136"/>
+            <point key="canvasLocation" x="1912.8" y="135.38230884557723"/>
         </scene>
     </scenes>
 </document>
