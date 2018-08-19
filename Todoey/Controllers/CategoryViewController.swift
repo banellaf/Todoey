@@ -7,12 +7,13 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 
 class CategoryViewController: UITableViewController {
+    
+    let realm = try! Realm()
 
-    var categories = [Category]()
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var categories : Results<Category>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,13 +23,13 @@ class CategoryViewController: UITableViewController {
 
     //MARK: - Table View Datasource
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categories.count
+        // if categories is not null we return the count otherwise we return 1
+        return categories?.count ?? 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
-        
-        cell.textLabel?.text = categories[indexPath.row].name
+        cell.textLabel?.text = categories?[indexPath.row].name ?? "No category added yet"
         
         return cell
     }
@@ -42,15 +43,16 @@ class CategoryViewController: UITableViewController {
         let destinationVC = segue.destination as! TodoListiewController
         
         if let indexPath = tableView.indexPathForSelectedRow{
-            destinationVC.selectedCategory = categories[indexPath.row]
+            destinationVC.selectedCategory = categories?[indexPath.row] 
         }
-        
     }
     
     //MARK: - Data Manipulation
-    func saveCategories(){
+    func save(category : Category){
         do {
-            try context.save()
+            try realm.write {
+                try realm.add(category)
+            }
         }
         catch {
             print ("Error during save categories \(error)")
@@ -60,14 +62,7 @@ class CategoryViewController: UITableViewController {
     }
     
     func loadCategories(){
-        let request : NSFetchRequest<Category> = Category.fetchRequest()
-        do{
-             categories = try context.fetch(request)
-        } catch {
-            print ("Error during load categories \(error)")
-        }
-        tableView.reloadData()
-       
+        categories = realm.objects(Category.self)
     }
     
     //MARK: - Add new category
@@ -77,12 +72,10 @@ class CategoryViewController: UITableViewController {
         let alert = UIAlertController(title: "Add Todoey category", message: "", preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
-            let category = Category(context: self.context)
+            let category = Category()
             category.name = textField.text!
             
-            self.categories.append(category)
-            
-            self.saveCategories()
+            self.save(category: category)
         }
         alert.addAction(action)
         
